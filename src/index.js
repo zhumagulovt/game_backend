@@ -1,6 +1,6 @@
 const Koa = require('koa');
 const { router } = require('./router');
-
+const { pool } = require('./pg');
 const { createLog, ErrorMiddleware } = require('./middlewares/')
 
 async function main() {
@@ -12,6 +12,8 @@ async function main() {
 
   // router
   app.use(router.routes());
+  
+  await pool.query('select 1+1');
 
   app.listen(HTTP_PORT, () => {
     console.log('Server starts running at port: ', HTTP_PORT);
