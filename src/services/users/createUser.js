@@ -18,7 +18,7 @@ async function createUser(email, password) {
      VALUES ($1, $2)
      RETURNING id, email;`, [email, hashedPassword]
   );
-
+    
   return data.rows[0];
 }
 
