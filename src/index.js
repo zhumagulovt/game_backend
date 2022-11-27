@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const bodyparser = require('koa-bodyparser');
 const { router } = require('./router');
 const { pool } = require('./pg');
 const { createLog, ErrorMiddleware } = require('./middlewares/')
@@ -7,6 +8,7 @@ async function main() {
   const app = new Koa();
   const HTTP_PORT = 8080;
 
+  app.use(bodyparser());
   app.use(createLog);
   app.use(ErrorMiddleware);
 
