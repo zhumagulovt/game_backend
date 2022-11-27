@@ -7,8 +7,8 @@ async function ErrorMiddleware(ctx, next) {
       ctx.status = 400;
       return;
     }
-    console.log(e);
-    ctx.throw(500);
+    e.status = e.statusCode || e.status || 500;
+    throw e;
   }
 }
                                                 

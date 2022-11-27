@@ -13,11 +13,11 @@ async function createUser(email, password) {
 
   const hashedPassword = await hashPassword(password);
 
-  const data = await pool.query(`
-    INSERT INTO users (email, password) 
-    VALUES ($1, $2)
-    RETURNING id, email;
-  `, [email, hashedPassword]);
+  const data = await pool.query(
+    `INSERT INTO users (email, password) 
+     VALUES ($1, $2)
+     RETURNING id, email;`, [email, hashedPassword]
+  );
 
   return data.rows[0];
 }

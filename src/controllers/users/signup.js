@@ -9,9 +9,18 @@ const bodySchema = Joi.object({
 
 async function signUp(ctx) {
   const data = await bodySchema.validateAsync(ctx.request.body);
+  try {
+    ctx.body = await UserService.createUser(data.email, data.password);
+    ctx.status = 201;
+  } catch(e) {
+    if (e.code = '23505') {
+      ctx.body = 'This email is already in use';
+      ctx.status = 400;
+      return;
+    }
 
-  ctx.body = await UserService.createUser(data.email, data.password);
-  ctx.status = 200;
+    throw (e);
+  }
 }
 
 module.exports = {
