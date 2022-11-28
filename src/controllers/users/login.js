@@ -8,9 +8,19 @@ const bodySchema = Joi.object({
 
 async function login(ctx) {
   const data = await bodySchema.validateAsync(ctx.request.body);
+  var user = {};
 
-  const result = await UserService.loginCheck(data.email, data.password);
-
+  try {
+    user = await UserService.checkCredentials(data.email, data.password);
+  } catch(e) {
+    ctx.status = 400;
+    ctx.body = e;
+    return;
+  }
+  const token = await UserService.genereateAuthToken(user.id);
+  
+  ctx.status = 200;
+  ctx.body = {'token': `Bearer ${token}`};
 }
 
 module.exports = {
